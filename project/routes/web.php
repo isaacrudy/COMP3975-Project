@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// ADMIN ROUTES
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -29,3 +32,19 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// ADMIN ROUTES
+
+Route::get('newsletters', [NewslettersController::class, 'index'])->name('newsletters.index');
+
+Route::get('newsletters/create', [NewslettersController::class, 'create'])->name('newsletters.create');
+
+Route::post('newsletters/store', [NewslettersController::class, 'store'])->name('newsletters.store');
+
+Route::get('newsletters/show/{id}', [NewslettersController::class, 'show'])->name('newsletters.show');
+
+Route::get('newsletters/edit/{id}', [NewslettersController::class, 'edit'])->name('newsletters.edit');
+
+Route::put('newsletters/update', [NewslettersController::class, 'update'])->name('newsletters.update');
+
+Route::get('newsletters/destroy/{id}', [NewslettersController::class, 'destroy'])->name('newsletters.destroy');

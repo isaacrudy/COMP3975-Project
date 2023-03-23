@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('newsletters', function (Blueprint $table) {
             $table->id();
             $table->string('Title');
-            $table->string('Content');
+            $table->string('Content', 1024);
             $table->string('ImageURL');
             $table->timestamps();
         });

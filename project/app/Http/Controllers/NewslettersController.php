@@ -9,7 +9,21 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 class NewslettersController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     * path="/newsletters",
+     * tags={"Newsletters"},
+     * summary="Get all newsletters",
+     * description="Read all the newsletters in the database",
+     * operationId="index",
+     * @OA\Response(
+     * response=200,
+     * description="successful operation"
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Invalid status value"
+     * )
+     * )
      */
     public function index()
     {
@@ -19,15 +33,34 @@ class NewslettersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('newsletters.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     * path="/newsletters/store",
+     * operationId="storeNewsletter",
+     * tags={"Newsletters"},
+     * summary="Add new newsletter",
+     * description="Add newsletter data.",
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(required={"Title", "Content", "ImageURL"})
+     * ),
+     * @OA\Response(
+     * response=201,
+     * description="Successful operation",
+     * @OA\JsonContent(required={"Title", "Content", "ImageURL"})
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Bad Request"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated",
+     * ),
+     * @OA\Response(
+     * response=403,
+     * description="Forbidden"
+     * )
+     * )
      */
     public function store(Request $request)
     {
@@ -46,7 +79,38 @@ class NewslettersController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     * path="/newsletters/show/{id}",
+     * operationId="getNewsletterById",
+     * tags={"Newsletters"},
+     * summary="Get newsletter information",
+     * description="Returns newsletter data",
+     * @OA\Parameter(
+     * name="id",
+     * description="newsletter id",
+     * required=true,
+     * in="path",
+     * @OA\Schema(
+     * type="integer"
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successful operation",
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Bad Request"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated",
+     * ),
+     * @OA\Response(
+     * response=403,
+     * description="Forbidden"
+     * )
+     * )
      */
     public function show($id)
     {
@@ -56,17 +120,47 @@ class NewslettersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('newsletters.edit', [
-            'newsletter' => Newsletter::findOrFail($id),
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     * path="/newsletters/update",
+     * operationId="updateNewsletter",
+     * tags={"Newsletters"},
+     * summary="Update existing newsletter",
+     * description="Returns updated newsletter data",
+     * @OA\Parameter(
+     * name="id",
+     * description="Newsletter id",
+     * required=true,
+     * in="path",
+     * @OA\Schema(
+     * type="integer"
+     * )
+     * ),
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(required={"Title", "Content", "ImageURL"})
+     * ),
+     * @OA\Response(
+     * response=202,
+     * description="Successful operation",
+     * @OA\JsonContent(required={"Title", "Content", "ImageURL"})
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Bad Request"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated",
+     * ),
+     * @OA\Response(
+     * response=403,
+     * description="Forbidden"
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Resource Not Found"
+     * )
+     * )
      */
     public function update(Request $request, Newsletter $newsletter)
     {
@@ -93,7 +187,39 @@ class NewslettersController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     * path="/newsletters/destroy/{id}",
+     * operationId="deleteNewsletter",
+     * tags={"Newsletters"},
+     * summary="Delete existing newsletter",
+     * description="Deletes a record and returns no content",
+     * @OA\Parameter(
+     * name="id",
+     * description="Newsletter id",
+     * required=true,
+     * in="path",
+     * @OA\Schema(
+     * type="integer"
+     * )
+     * ),
+     * @OA\Response(
+     * response=204,
+     * description="Successful operation",
+     * @OA\JsonContent()
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated",
+     * ),
+     * @OA\Response(
+     * response=403,
+     * description="Forbidden"
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Resource Not Found"
+     * )
+     * )
      */
     public function destroy($id)
     {
@@ -105,5 +231,25 @@ class NewslettersController extends Controller
         return redirect()
             ->route('newsletters.index')
             ->with('success', 'Newsletter deleted successfully');
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('newsletters.create');
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        return view('newsletters.edit', [
+            'newsletter' => Newsletter::findOrFail($id),
+        ]);
     }
 }

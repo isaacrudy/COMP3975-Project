@@ -16,10 +16,10 @@ class NewsletterFactory extends Factory
      */
     public function definition(): array
     {
-        // UPDATE FAKER TO USE LOREM IMPSUM TEXT AND GOOD IMAGES
+        // TODO UPDATE FAKER TO USE LOREM IMPSUM TEXT AND GOOD IMAGES
         return [
             'Title' => $this->faker->company(),
-            'Content' => $this->faker->lastName(),
+            'Content' => $this->faker->text(1024),
             'ImageURL' => $this->faker->company(),
             ];
     }
