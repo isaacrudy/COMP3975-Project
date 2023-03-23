@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// ADMIN ROUTES
+
 Route::get('newsletters', [NewslettersController::class, 'index'])->name('newsletters.index');
 
 Route::get('newsletters/create', [NewslettersController::class, 'create'])->name('newsletters.create');

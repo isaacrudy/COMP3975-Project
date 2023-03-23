@@ -46,12 +46,5 @@ class NewsletterSeeder extends Seeder
             'ImageURL' => 'https://picsum.photos/200/300',
         ]);
         $s5->save();
-
-        $s6 = new \App\Models\Newsletter([
-            'Title' => 'Newsletter 6',
-            'Content' => 'Lorem Ipsum',
-            'ImageURL' => 'https://picsum.photos/200/300',
-        ]);
-        $s6->save();
     }
 }

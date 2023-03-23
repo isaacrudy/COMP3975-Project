@@ -1,0 +1,268 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Newsletter API",
+        "description": "Newsletter API Documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/newsletters": {
+            "get": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Get all newsletters",
+                "description": "Read all the newsletters in the database",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/newsletters/store": {
+            "post": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Add new newsletter",
+                "description": "Add newsletter data.",
+                "operationId": "storeNewsletter",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "Title",
+                                    "Content",
+                                    "ImageURL"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "Title",
+                                        "Content",
+                                        "ImageURL"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/newsletters/show/{id}": {
+            "get": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Get newsletter information",
+                "description": "Returns newsletter data",
+                "operationId": "getNewsletterById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "newsletter id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/newsletters/update": {
+            "put": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Update existing newsletter",
+                "description": "Returns updated newsletter data",
+                "operationId": "updateNewsletter",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Newsletter id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "Title",
+                                    "Content",
+                                    "ImageURL"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "Title",
+                                        "Content",
+                                        "ImageURL"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/newsletters/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Delete existing newsletter",
+                "description": "Deletes a record and returns no content",
+                "operationId": "deleteNewsletter",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Newsletter id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Newsletter": {
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": "true",
+                        "example": "1"
+                    },
+                    "Title": {
+                        "description": "Title of Newsletter",
+                        "type": "string",
+                        "format": "text",
+                        "readOnly": "true",
+                        "example": "Newsletter of the Day"
+                    },
+                    "Content": {
+                        "description": "Content of Newsletter",
+                        "type": "string",
+                        "format": "text",
+                        "readOnly": "true",
+                        "example": "Lorem Ipsum"
+                    },
+                    "ImageURL": {
+                        "description": "ImageURL of Newsletter",
+                        "type": "string",
+                        "format": "text",
+                        "readOnly": "true",
+                        "example": "https://picsum.photos/200/300"
+                    },
+                    "created_at": {
+                        "description": "Created at.",
+                        "format": "datetime",
+                        "readOnly": "true",
+                        "example": "2022-05-18 07:50:45"
+                    },
+                    "updated_at": {
+                        "description": "Updated at.",
+                        "format": "datetime",
+                        "readOnly": "true",
+                        "example": "2022-06-11 06:15:25"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Newsletter"
+                }
+            }
+        }
+    }
+}
