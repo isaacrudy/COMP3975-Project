@@ -188,7 +188,7 @@ class NewslettersController extends Controller
 
     /**
      * @OA\Delete(
-     * path="/newsletters/destroy/{id}",
+     * path="/api/newsletter/{id}",
      * operationId="deleteNewsletter",
      * tags={"Newsletters"},
      * summary="Delete existing newsletter",
@@ -233,7 +233,6 @@ class NewslettersController extends Controller
             ->with('success', 'Newsletter deleted successfully');
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -241,7 +240,6 @@ class NewslettersController extends Controller
     {
         return view('newsletters.create');
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -251,5 +249,48 @@ class NewslettersController extends Controller
         return view('newsletters.edit', [
             'newsletter' => Newsletter::findOrFail($id),
         ]);
+    }
+
+    /**
+     * @OA\Get(
+     * path="/api/newsletters",
+     * tags={"Newsletters"},
+     * summary="Get the last five newsletters",
+     * description="Get the last five newsletters",
+     * operationId="lastFiveNewsletters",
+     * @OA\Response(
+     * response=200,
+     * description="successful operation"
+     * ),
+     * @OA\Response(
+     * response=400,
+     * description="Invalid status value"
+     * )
+     * )
+     */
+    public function lastFiveNewsletters()
+    {
+        // Get the 5 latest newsletters. Distinct as joins will cause multiple NewsletterIDs to appear and count for the take query.
+        $distinctNewsletters = DB::table('newsletters')
+            ->join('articles', 'newsletters.NewsletterID', '=', 'articles.NewsletterID')
+            ->select('newsletters.NewsletterID')
+            ->orderBy('newsletters.NewsletterID', 'desc')
+            ->distinct()
+            ->take(5)
+            ->get()
+            ->toArray();
+
+        $myArray = [];
+
+        for ($i = 0; $i < count($distinctNewsletters); $i++) {
+            array_push($myArray, $distinctNewsletters[$i]->NewsletterID);
+        }
+
+        return DB::table('newsletters')
+            ->join('articles', 'newsletters.NewsletterID', '=', 'articles.NewsletterID')
+            ->select('newsletters.NewsletterID', 'newsletters.Title as NewsletterTitle', 'newsletters.Date', 'newsletters.Logo', 'articles.Title as ArticleTitle', 'articles.Description', 'articles.Image', 'articles.ImagePlacement')
+            ->whereIn('newsletters.NewsletterID', $myArray)
+            ->orderBy('newsletters.NewsletterID', 'desc')
+            ->get();
     }
 }
