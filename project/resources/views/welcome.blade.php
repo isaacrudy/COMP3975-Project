@@ -14,6 +14,7 @@
     <p>Germanpreet Singh: A01312851</p>
 @endsection --}}
 
+{{-- Adding a comment --}}
 
 @guest
     <x-guest-layout>
