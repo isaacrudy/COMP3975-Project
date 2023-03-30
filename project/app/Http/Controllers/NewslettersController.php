@@ -8,6 +8,11 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class NewslettersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * @OA\Get(
      * path="/newsletters",

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // $this->call(NewsletterSeeder::class);
+        $this->call(UsersTableSeeder::class);
 
         \App\Models\Newsletter::factory(10)->create();
     }
