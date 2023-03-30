@@ -8,6 +8,11 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class NewslettersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * @OA\Get(
      * path="/newsletters",
@@ -233,7 +238,6 @@ class NewslettersController extends Controller
             ->with('success', 'Newsletter deleted successfully');
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -241,7 +245,6 @@ class NewslettersController extends Controller
     {
         return view('newsletters.create');
     }
-
 
     /**
      * Show the form for editing the specified resource.

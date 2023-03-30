@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__.'/auth.php';
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -32,20 +34,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
 
 // ADMIN ROUTES
-
-Route::get('newsletters', [NewslettersController::class, 'index'])->name('newsletters.index');
-
-Route::get('newsletters/create', [NewslettersController::class, 'create'])->name('newsletters.create');
-
-Route::post('newsletters/store', [NewslettersController::class, 'store'])->name('newsletters.store');
-
-Route::get('newsletters/show/{id}', [NewslettersController::class, 'show'])->name('newsletters.show');
-
-Route::get('newsletters/edit/{id}', [NewslettersController::class, 'edit'])->name('newsletters.edit');
-
-Route::put('newsletters/update', [NewslettersController::class, 'update'])->name('newsletters.update');
-
-Route::get('newsletters/destroy/{id}', [NewslettersController::class, 'destroy'])->name('newsletters.destroy');
+Route::group(['middleware'=>'auth'], function () {
+    Route::get('newsletters', [NewslettersController::class, 'index'])->name('newsletters.index');
+    Route::get('newsletters/create', [NewslettersController::class, 'create'])->name('newsletters.create');
+    Route::post('newsletters/store', [NewslettersController::class, 'store'])->name('newsletters.store');
+    Route::get('newsletters/show/{id}', [NewslettersController::class, 'show'])->name('newsletters.show');
+    Route::get('newsletters/edit/{id}', [NewslettersController::class, 'edit'])->name('newsletters.edit');
+    Route::put('newsletters/update', [NewslettersController::class, 'update'])->name('newsletters.update');
+    Route::get('newsletters/destroy/{id}', [NewslettersController::class, 'destroy'])->name('newsletters.destroy');
+});
